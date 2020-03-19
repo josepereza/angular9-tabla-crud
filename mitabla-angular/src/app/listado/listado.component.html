@@ -27,14 +27,14 @@
     
         <!-- Weight Column -->
         <ng-container matColumnDef="prod_desc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Desc </th>
           <td mat-cell *matCellDef="let element"> {{element.prod_desc}} </td>
           <td><button>borrar</button></td>
         </ng-container>
     
         <!-- Symbol Column -->
         <ng-container matColumnDef="prod_price">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
           <td mat-cell *matCellDef="let element"> {{element.prod_price}} </td>
         </ng-container>
         
@@ -55,7 +55,7 @@
   
   
   <nm-modal-window #agregarRegistros>
-    <h1 header>Agregar Registros</h1>
+    <h1 header>{{tituloModal}} Registros</h1>
     <div body>
       <form [formGroup]="profileForm"  (ngSubmit)="onSubmit()">
     
@@ -73,12 +73,13 @@
             Precio:
             <input type="number" formControlName="prod_price">
           </label>
+          <br>
           <button *ngIf=!actualizar type="submit" [disabled]="!profileForm.valid">Agregar</button>
           <button *ngIf=actualizar >editar</button>
-    
+           <br>
       </form>
       <br>
-      <input type="button" value="Close Me" (click)="agregarRegistros.hide()" />
+      <input type="button" value="Close Me"(click)="actualizar=false" (click)="agregarRegistros.hide()" />
     </div>
     
   </nm-modal-window>

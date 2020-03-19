@@ -26,6 +26,7 @@ export class ListadoComponent implements OnInit {
   prod_price: number = null;
   data: Product[] = [];
   actualizar:boolean=false;
+  tituloModal:string="Agregar";
   displayedColumns: string[] = ['_id', 'prod_name', 'prod_desc', 'prod_price','actions'];
   isLoadingResults = true;
 
@@ -86,6 +87,7 @@ this.Lista();
 }
 editar(id: any) {
   this.actualizar=true;
+  this.tituloModal="Editar";
   this.api.getProduct(id).subscribe((data: any) => {
     this._id = data._id;
     this.profileForm.setValue({
