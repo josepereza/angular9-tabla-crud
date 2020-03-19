@@ -2,6 +2,8 @@
 
 <div class="container">
   <h2>listado clientes</h2>
+  <button class="btn" type="button" mat-raised-button color="primary" (click)="agregarRegistros.show()">Agregar</button>
+  <br>
     <br>
     <mat-form-field>
       <mat-label>Filter</mat-label>
@@ -39,8 +41,8 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let element">
-                                            
-            <button (click)="prueba(element.prod_name)" color="warn">Borrar</button>
+            <button  (click)="editar(element._id)" (click)="agregarRegistros.show()">editar</button>                             
+            <button  (click)="borrar(element._id)" >Borrar</button>
           </mat-cell>
         </ng-container>
     
@@ -55,9 +57,30 @@
   <nm-modal-window #agregarRegistros>
     <h1 header>Agregar Registros</h1>
     <div body>
+      <form [formGroup]="profileForm"  (ngSubmit)="onSubmit()">
+    
+        <label>
+          Product Name:
+          <input type="text" formControlName="prod_name">
+        </label>
       
+        <label>
+          Descripcion:
+          <input type="text" formControlName="prod_desc">
+        </label>
+    
+        <label>
+            Precio:
+            <input type="number" formControlName="prod_price">
+          </label>
+          <button *ngIf=!actualizar type="submit" [disabled]="!profileForm.valid">Agregar</button>
+          <button *ngIf=actualizar >editar</button>
+    
+      </form>
       <br>
       <input type="button" value="Close Me" (click)="agregarRegistros.hide()" />
     </div>
     
   </nm-modal-window>
+
+  

@@ -4,6 +4,8 @@ import {Product} from "../product";
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+
 
 
 @Component({
@@ -16,14 +18,16 @@ export class ListadoComponent implements OnInit {
   term : string;
   p: number = 1;
 
-  
+  profileForm: FormGroup;
+
   _id = '';
   prod_name = '';
   prod_desc = '';
   prod_price: number = null;
   data: Product[] = [];
-  
+  actualizar:boolean=false;
   displayedColumns: string[] = ['_id', 'prod_name', 'prod_desc', 'prod_price','actions'];
+  isLoadingResults = true;
 
   dataSource: MatTableDataSource<any>;
 
@@ -32,11 +36,17 @@ export class ListadoComponent implements OnInit {
 
 
 
-  constructor(private api: ProductosService ) { }
+  constructor(private api: ProductosService,private formBuilder: FormBuilder ) { }
 
   ngOnInit() {
-   
+    this.profileForm = this.formBuilder.group({
+      
+      'prod_name' : [null, Validators.required],
+      'prod_desc' : [null, Validators.required],
+      'prod_price' : [null, Validators.required]
+    });
 this.Lista(); 
+    
     
   }
   Lista(){
@@ -61,23 +71,62 @@ this.Lista();
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   onSubmit() {
-   
+    if (this.actualizar){
+      
+    this.onFormSubmit();
+    return
+    }else {
+    // TODO: Use EventEmitter with form 
+    this.api.addProduct(this.profileForm.value)
+    .subscribe((res: any) => {
+      this.Lista();
+    console.log(res);
+  })
+    }
 }
 editar(id: any) {
-  
+  this.actualizar=true;
+  this.api.getProduct(id).subscribe((data: any) => {
+    this._id = data._id;
+    this.profileForm.setValue({
+      prod_name: data.prod_name,
+      prod_desc: data.prod_desc,
+      prod_price: data.prod_price
+    });
+  });
 }
 
 borrar(id: any) {
-  
+  this.isLoadingResults = true;
+  this.api.deleteProduct(id)
+    .subscribe(res => {
+      this.Lista();
+        this.isLoadingResults = false;
+        
+      }, (err) => {
+        console.log(err);
+        this.isLoadingResults = false;
+      }
+    );
 }
+
 
 onFormSubmit() {
-  
+  this.isLoadingResults = true;
+  this.api.updateProduct(this._id, this.profileForm.value)
+    .subscribe((res: any) => {
+        const id = res._id;
+        this.isLoadingResults = false;
+        this.actualizar=false;
+      }, (err: any) => {
+        console.log(err);
+        this.isLoadingResults = false;
+      }
+    );
+    this.Lista();
 
 }
-prueba(nombre){
-  alert("Has pulsado "+ nombre)
-}
+
 }
 export interface misDatos {
   _id: string;

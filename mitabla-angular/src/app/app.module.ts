@@ -6,12 +6,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { ProductosService } from "./productos.service";
 import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from "@angular/forms";
+
+
 
 
 
 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 
@@ -26,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     BrowserModule,MatPaginatorModule,MatSortModule,MatTableModule, BrowserAnimationsModule,
-    ModalManagerModule,MatFormFieldModule,MatInputModule,HttpClientModule
+    ModalManagerModule,MatFormFieldModule,MatInputModule,HttpClientModule,FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ProductosService],
   bootstrap: [AppComponent]
