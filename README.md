@@ -1,4 +1,4 @@
-# angular9-simple-tabla
+# angular9-tabla-crud
 
 Simple tabla con ordenacion,paginacion y filtro realizada con Material Angular
 
